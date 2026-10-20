@@ -87,6 +87,13 @@ npm run pet              # 启动桌宠
 npm run pet -- clap      # 让小晚鼓一次掌
 ```
 
+安装器会把 `pet/` 一起装进 skill 目录，所以装完也能直接开桌宠（路径换成实际安装位置）：
+
+```bash
+node ~/.claude/skills/cyber-xiaowan/pet/cli.mjs
+node ~/.claude/skills/cyber-xiaowan/pet/cli.mjs bishou   # 比手大赛彩蛋
+```
+
 接入 Codex 的 `notify` 钩子和 DSH 会话观察器等细节见 [`pet/README.md`](./pet/README.md)。
 
 ## 怎么用

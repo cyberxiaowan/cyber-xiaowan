@@ -150,6 +150,7 @@ async function installSkill(targetDir) {
     await cp(path.join(repoRoot, 'START.md'), path.join(staging, 'START.md'));
     await cp(path.join(repoRoot, 'agents'), path.join(staging, 'agents'), { recursive: true });
     await cp(path.join(repoRoot, 'references'), path.join(staging, 'references'), { recursive: true });
+    await cp(path.join(repoRoot, 'pet'), path.join(staging, 'pet'), { recursive: true });
     await cp(path.join(repoRoot, 'README.md'), path.join(staging, 'README.md'));
     await writeFile(path.join(staging, 'INSTALLED_BY_CYBER_XIAOWAN.txt'), `${new Date().toISOString()}\n`);
 
@@ -182,6 +183,10 @@ const roots = rootsFromEnv();
 const target = await chooseTarget(roots);
 const installed = await installSkill(target.dir);
 if (installed) {
+  const installedRoot = path.join(target.dir, 'cyber-xiaowan');
   output.write(`${welcome}\n`);
-  output.write(`\n已安装到：${path.join(target.dir, 'cyber-xiaowan')}\n`);
+  output.write(`\n已安装到：${installedRoot}\n`);
+  output.write(`\n桌宠也一并装好了（含彩蛋）：\n`);
+  output.write(`  node ${path.join(installedRoot, 'pet', 'cli.mjs')}\n`);
+  output.write(`  node ${path.join(installedRoot, 'pet', 'cli.mjs')} bishou   # 比手大赛\n`);
 }
