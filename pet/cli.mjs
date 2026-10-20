@@ -120,9 +120,9 @@ if (port) {
   console.log('触发状态示例：node pet/cli.mjs clap');
   if (options.state) {
     await postState(new URL(url).port, options.state, options.note).catch(() => {});
-  } else if (options.open) {
-    openWindow(url);
   }
+  // 冷启动带状态时也要弹窗：否则 `node pet/cli.mjs bishou` 只起了服务，桌面上什么都没有
+  if (options.open) openWindow(url);
 
   let closing = false;
   const close = () => {
