@@ -20,8 +20,9 @@
   "scripts": {
     "start": "node ./bin/install.js",
     "pet": "node ./pet/cli.mjs",
-    "check": "node --check ./bin/install.js && node --check ./bin/cyber-xiaowan.js && node --check ./pet/runtime-paths.mjs && node --check ./pet/cli.mjs && node --check ./pet/server.mjs && node --check ./pet/integrations/codex-notify.mjs && node --check ./pet/integrations/dsh-watch.mjs && node ./scripts/privacy-check.js",
-    "privacy:check": "node ./scripts/privacy-check.js"
+    "check": "node --check ./bin/install.js && node --check ./bin/cyber-xiaowan.js && node --check ./pet/runtime-paths.mjs && node --check ./pet/cli.mjs && node --check ./pet/server.mjs && node --check ./pet/integrations/codex-notify.mjs && node --check ./pet/integrations/dsh-watch.mjs && node --check ./pet/integrations/workbuddy-hook.mjs && node --check ./pet/integrations/install-workbuddy-hooks.mjs && node ./scripts/privacy-check.js",
+    "privacy:check": "node ./scripts/privacy-check.js",
+    "pet:hooks:workbuddy": "node ./pet/integrations/install-workbuddy-hooks.mjs"
   },
   "engines": {
     "node": ">=18"

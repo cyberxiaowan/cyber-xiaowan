@@ -49,6 +49,33 @@ node pet/cli.mjs bishou          # 直接开赛
 
 手是按 `cm × 3.05px` 真实比例画的，所以肉眼能看出差别；胜负按四舍五入到 0.1 cm 的数值判定。战绩只写在本机浏览器的 localStorage（`cyber-xiaowan-bishou`），不上传、不落日志；清掉它等于抹掉她的记忆。状态清单里 `"game": "bishou"` 是开关：删掉这个字段，它就退回一个普通的 emoji 状态，其他状态不受影响。
 
+## 接入 WorkBuddy
+
+WorkBuddy 的 hooks 与 Claude Code 同构，配置在 `~/.workbuddy/settings.json` 的 `hooks` 字段。一条命令挂上：
+
+```bash
+node <repo>/pet/integrations/install-workbuddy-hooks.mjs
+```
+
+它会写 `SessionStart`、`UserPromptSubmit`、`PreToolUse`、`PermissionRequest`、`Notification`、`PreCompact`、`Stop`、`SessionEnd` 八个事件，写前备份 `settings.json.bak-before-pet-<时间戳>`，只替换属于自己的条目，不动别人的钩子。摘掉加 `--remove`。
+
+映射关系：
+
+| WorkBuddy 事件 | 桌宠状态 |
+| --- | --- |
+| `SessionStart` | 🌱 待机 |
+| `UserPromptSubmit` | 🤔 思考中 |
+| `PreToolUse`（Read / Grep / Glob / WebFetch…） | 🤔 思考中（在看） |
+| `PreToolUse`（Write / Edit / Bash / MCP 工具…） | 🛠️ 干活中（在改） |
+| `PermissionRequest` | 🧐 有疑问 |
+| `Notification`（`idle_prompt` / `auth_success`） | 🌱 待机 / 🎉 鼓掌 |
+| `Stop` | 🎉 鼓掌庆祝，6 秒后回待机 |
+| `SessionEnd` | 😴 打盹 |
+
+和 Codex 一样**不要求先开桌宠**：没开着的时候钩子会 detached 起一个 `cli.mjs <state>`，窗口自己弹出来。区别是 WorkBuddy 的 `PreToolUse` 一次任务里会触发上百次，所以这里加了两条保护——同一状态 1.5 秒内只发一次；**比手大赛进行中不抢状态**（否则钩子一响，你正比着的手就没了）。不想被自动拉起仍可用 `CYBER_XIAOWAN_PET_AUTOSTART=0` 或 `~/.cyber-xiaowan/no-autostart`。
+
+钩子永远静默：stdout 为空、退出码 0，绝不会卡住或污染 WorkBuddy 的对话。
+
 ## 接入 Codex
 
 Codex CLI 支持 `notify` 钩子。在 `~/.codex/config.toml` 中加一行（路径换成你的仓库实际位置）：
