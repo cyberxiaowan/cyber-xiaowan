@@ -57,7 +57,11 @@ Codex CLI 支持 `notify` 钩子。在 `~/.codex/config.toml` 中加一行（路
 notify = ["node", "<repo>/pet/integrations/codex-notify.mjs"]
 ```
 
-效果：Codex 每完成一轮回答，小晚就鼓一次掌；出错时歪头提问。桌宠没开时钩子静默退出，不影响 Codex。
+效果：Codex 每完成一轮回答，小晚就鼓一次掌；出错时歪头提问。
+
+**桌宠没开着的时候，钩子会自己把桌宠带起来**（detached 起 `cli.mjs <state>`，窗口自动弹出，状态一并设好）。所以接入之后不需要单独起服务、也不用记端口地址：跑 Codex 就行。
+
+不想被自动拉起的话，设 `CYBER_XIAOWAN_PET_AUTOSTART=0`，或在 `~/.cyber-xiaowan/no-autostart` 放一个空文件；两种情况钩子都退回「桌宠没开就静默退出」，绝不影响 Codex。
 
 ## 接入 DSH
 
