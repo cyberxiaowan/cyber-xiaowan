@@ -114,6 +114,113 @@
   @keyframes cheer   { 0%,100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-13px) rotate(-2.5deg); } 50% { transform: translateY(0); } 75% { transform: translateY(-13px) rotate(2.5deg); } }
   @keyframes tilt    { 0%,100% { transform: rotate(0); } 40% { transform: rotate(5deg); } 70% { transform: rotate(-3deg); } }
   @keyframes zzz     { 0% { opacity: 0; transform: translate(0, 4px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, -14px); } }
+
+  /* —— 彩蛋：比手大赛 —— */
+  #duel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 12px 8px;
+    gap: 4px;
+    background: linear-gradient(160deg, #fff8f1, #f7e7d8);
+  }
+  #duel[hidden] { display: none; }
+  #duel-head {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+  #duel-score { font-variant-numeric: tabular-nums; }
+  #duel-arena {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+  }
+  #duel-pair { display: flex; align-items: flex-end; gap: 12px; }
+  .duel-side { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .duel-hold {
+    height: 106px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    padding-bottom: 4px;
+    border-bottom: 1.5px dashed #e3cdb9;
+  }
+  .duel-stack { display: grid; place-items: end center; }
+  .duel-stack > * { grid-area: 1 / 1; }
+  .duel-slot[hidden], .hand[hidden] { display: none; }
+  #duel-her-b { transform: scaleX(-1); margin-right: -9px; fill: #fff2e6; }
+  .hand {
+    display: block;
+    width: 0;
+    height: auto;
+    aspect-ratio: 84 / 104;
+    filter: drop-shadow(0 3px 4px rgba(74, 63, 53, 0.07));
+    transition: width 0.34s cubic-bezier(.3, 1.25, .5, 1);
+  }
+  .hand-her { fill: #ffe4cf; stroke: #4a3f35; }
+  .hand-you { fill: #ffd8c4; stroke: #d97861; }
+  .duel-slot {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1.5px dashed #e3cdb9;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    font-size: 20px;
+    color: #cdb6a2;
+  }
+  .duel-who { font-size: 9.5px; letter-spacing: 0.08em; color: var(--ink-soft); transition: color .2s ease; }
+  .duel-side.won .duel-who { color: #d97861; font-weight: 600; }
+  #duel-say {
+    min-height: 34px;
+    max-width: 236px;
+    font-size: 11.5px;
+    line-height: 1.5;
+    text-align: center;
+    white-space: pre-line;
+  }
+  #duel-picks { display: flex; gap: 8px; }
+  #duel-picks button {
+    width: 74px;
+    height: 54px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    padding: 6px 0 7px;
+    border: 1.5px solid #f0e4d7;
+    border-radius: 14px;
+    background: #fff;
+    color: var(--ink);
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .hand-mini { flex: none; }
+  #duel-picks button span { font-size: 9.5px; line-height: 1; letter-spacing: 0.04em; color: var(--ink-soft); }
+  #duel-picks button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(74, 63, 53, 0.14); }
+  #duel-picks button:disabled { opacity: 0.4; cursor: default; }
+  #duel-foot { font-size: 10px; color: var(--ink-soft); letter-spacing: 0.05em; text-align: center; }
+
+  @keyframes pop { 0% { transform: scale(0.94); opacity: 0.4; } 70% { transform: scale(1.02); opacity: 1; } 100% { transform: scale(1); } }
+  #duel-say.pop { animation: pop 0.34s ease-out 1; }
 </style>
 </head>
 <body>
@@ -125,6 +232,54 @@
       <span id="zzz-mark">💤</span>
       <span id="emoji-face" hidden></span>
       <img id="pet-img" alt="赛博小晚桌宠" hidden />
+      <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none">
+        <symbol id="hand-shape" viewBox="-14 -8 84 104">
+          <g stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round">
+            <rect x="14" y="18" width="11" height="38" rx="5.5" />
+            <rect x="26" y="8" width="11" height="48" rx="5.5" />
+            <rect x="38" y="14" width="10" height="42" rx="5" />
+            <rect x="48" y="24" width="9" height="32" rx="4.5" />
+            <rect x="12" y="38" width="47" height="46" rx="17" />
+            <rect x="0" y="46" width="14" height="30" rx="7" transform="rotate(-34 7 52)" />
+          </g>
+        </symbol>
+      </svg>
+      <div id="duel" hidden>
+        <div id="duel-head"><span>🏆 比手大赛</span><span id="duel-score">你 0 : 0 小晚</span></div>
+        <div id="duel-arena">
+          <div id="duel-pair">
+            <div class="duel-side" id="duel-side-you">
+              <div class="duel-hold">
+                <div class="duel-stack">
+                  <span id="duel-you-slot" class="duel-slot">?</span>
+                  <svg id="duel-you-hand" class="hand hand-you" hidden><use href="#hand-shape" /></svg>
+                </div>
+              </div>
+              <span class="duel-who">你</span>
+            </div>
+            <div class="duel-side" id="duel-side-her">
+              <div class="duel-hold">
+                <svg id="duel-her-a" class="hand hand-her"><use href="#hand-shape" /></svg>
+                <svg id="duel-her-b" class="hand hand-her"><use href="#hand-shape" /></svg>
+              </div>
+              <span class="duel-who">小晚</span>
+            </div>
+          </div>
+          <div id="duel-say">选一只自己的手，来跟她比。</div>
+        </div>
+        <div id="duel-picks">
+          <button type="button" data-size="s" title="小手（1）">
+            <svg class="hand hand-mini hand-you" style="width: 14px"><use href="#hand-shape" /></svg><span>小手</span>
+          </button>
+          <button type="button" data-size="m" title="中手（2）">
+            <svg class="hand hand-mini hand-you" style="width: 19px"><use href="#hand-shape" /></svg><span>中手</span>
+          </button>
+          <button type="button" data-size="l" title="大手（3）">
+            <svg class="hand hand-mini hand-you" style="width: 24px"><use href="#hand-shape" /></svg><span>大手</span>
+          </button>
+        </div>
+        <div id="duel-foot">三局两胜</div>
+      </div>
     </div>
     <div id="hint">拖动移动 · 点击切换 · 双击鼓掌 🎉</div>
   </div>
@@ -134,9 +289,17 @@
   const $ = (id) => document.getElementById(id);
   const card = $('pet-card'), bubble = $('bubble'), badge = $('state-badge');
   const stage = $('stage'), img = $('pet-img'), face = $('emoji-face'), chip = $('state-emoji');
+  const duelBox = $('duel'), duelSay = $('duel-say'), duelScore = $('duel-score');
+  const duelPicks = $('duel-picks'), duelFoot = $('duel-foot');
+  const duelYouSlot = $('duel-you-slot'), duelYouHand = $('duel-you-hand');
+  const duelHerA = $('duel-her-a'), duelHerB = $('duel-her-b');
+  const duelSideYou = $('duel-side-you'), duelSideHer = $('duel-side-her');
+  const hint = $('hint');
+  const HINT_IDLE = '拖动移动 · 点击切换 · 双击鼓掌 🎉';
 
   let meta = null;
   let current = null;
+  let currentNote = '';
   let revertTimer = null;
   let lineTimer = null;
 
@@ -150,11 +313,20 @@
     const conf = meta.states[name];
     if (!conf) return;
     current = name;
+    currentNote = note || '';
 
+    const inDuel = conf.game === 'bishou';
     badge.textContent = conf.label || name;
-    bubble.textContent = note || pickLine(name);
+    bubble.textContent = currentNote || pickLine(name);
 
-    if (conf.image) {
+    duelBox.hidden = !inDuel;
+    hint.textContent = inDuel ? '1 2 3 选尺寸 · Esc 收工' : HINT_IDLE;
+    if (inDuel) {
+      img.hidden = true;
+      face.hidden = true;
+      chip.hidden = true;
+      if (!duelState.playing) startDuel();
+    } else if (conf.image) {
       img.src = '/' + conf.image;
       img.hidden = false;
       face.hidden = true;
@@ -166,6 +338,7 @@
       img.hidden = true;
       chip.hidden = true;
     }
+    if (!inDuel) stopDuel();
 
     stage.className = '';
     void stage.offsetWidth;
@@ -177,9 +350,11 @@
     }
 
     clearInterval(lineTimer);
-    lineTimer = setInterval(() => {
-      if (!document.hidden) bubble.textContent = pickLine(current);
-    }, 9000);
+    if (!inDuel) {
+      lineTimer = setInterval(() => {
+        if (!document.hidden) bubble.textContent = pickLine(current);
+      }, 9000);
+    }
   }
 
   async function applyState(name, note) {
@@ -221,21 +396,261 @@
   });
 
   // —— 点击切换 / 双击鼓掌 ——
+  // 比手大赛进行中不吃这两下，免得手一抖就离场（Esc 才能收工）。
   let clickCount = 0, clickTimer = null;
   card.addEventListener('click', () => {
+    const inDuel = current && meta && meta.states[current] && meta.states[current].game === 'bishou';
+    if (inDuel) return;
     clickCount++;
     clearTimeout(clickTimer);
     clickTimer = setTimeout(() => {
       if (clickCount >= 2) {
         applyState('clap');
       } else if (meta) {
-        const names = Object.keys(meta.states);
+        const names = Object.keys(meta.states).filter((name) => !meta.states[name].game);
         const next = names[(names.indexOf(current) + 1) % names.length];
         applyState(next);
       }
       clickCount = 0;
     }, 260);
   });
+
+  // —— 彩蛋：比手大赛 ——
+  // 她伸出一双卡通大手，你从三只自己的手里挑一只，按真实比例比大小。三局两胜。
+  const YOUR_CM = { s: 16.2, m: 18.6, l: 20.8 };
+  const YOUR_NAME = { s: '小手', m: '中手', l: '大手' };
+  const HER_CM = [15.4, 16.8, 18.6, 19.8, 21.2, 22.4];
+  const PX_PER_CM = 3.05;
+  const SIZE_BY_DIGIT = { 1: 's', 2: 'm', 3: 'l' };
+
+  const PICK_LINES = {
+    s: ['小手。有骨气，但手小。', '小手先放上来，别抖。'],
+    m: ['中手。很稳，稳得像没选。', '中手，标准尺寸，标准结局。'],
+    l: ['大手。行，你先放着。', '大手是吧。我看看我够不够。'],
+  };
+  const REPEAT_LINES = {
+    s: ['又是小手。你是在谦虚，还是在挑衅。', '小手第三次。我记住了。'],
+    m: ['又中手。你连手都不换。', '还是中手。稳定得有点无聊。'],
+    l: ['又是大手。你手真这么大？', '大手第三次了。行吧，手大的人说话都这样。'],
+  };
+  const MARGIN_LINES = {
+    bigWin: ['大得有点欺负人了，这局你的。', '你这手能一把抓起她的活。'],
+    win: ['大一点点。裁判是我，我判你赢。', '险胜。手大不是罪。'],
+    tie: ['一模一样。这局算平，谁也别说话。', '同款手，连尺寸都一样。'],
+    lose: ['就差这一点。你手再张开点？', '这局我的。你的手比较谦虚。'],
+    bigLose: ['差得有点多。你那只是手模。', '这局我赢，而且不费劲。'],
+  };
+  const FINAL_LINES = {
+    you: ['你赢了。手比我大，我认。', '冠军是你。手大，气也足。'],
+    her: ['我赢了。别沮丧，我这是赛博手。', '三局结束，你的手可以收回去暖着了。'],
+    tie: ['打平。两双手，谁也没压过谁。', '平手。手都举累了。'],
+  };
+
+  const duelState = { playing: false, done: false, locked: false, round: 0, you: 0, her: 0, bag: [], herCm: 0, lastSize: '', repeat: 0 };
+  let duelTimers = [];
+
+  const pickOne = (list) => list[Math.floor(Math.random() * list.length)];
+  function clearDuelTimers() {
+    for (const timer of duelTimers) clearTimeout(timer);
+    duelTimers = [];
+  }
+  function readTally() {
+    try {
+      return JSON.parse(localStorage.getItem('cyber-xiaowan-bishou') || '{}') || {};
+    } catch {
+      return {};
+    }
+  }
+  function writeTally(tally) {
+    try {
+      localStorage.setItem('cyber-xiaowan-bishou', JSON.stringify(tally));
+    } catch {}
+  }
+  function setPicks(enabled) {
+    for (const button of duelPicks.querySelectorAll('button')) button.disabled = !enabled;
+  }
+  function handWidth(cm) {
+    return (cm * PX_PER_CM).toFixed(1) + 'px';
+  }
+  function shuffle(list) {
+    const copy = list.slice();
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+  function say(text, pop = false) {
+    duelSay.textContent = text;
+    duelSay.classList.remove('pop');
+    if (pop) {
+      void duelSay.offsetWidth;
+      duelSay.classList.add('pop');
+    }
+  }
+  function clearWon() {
+    duelSideYou.classList.remove('won');
+    duelSideHer.classList.remove('won');
+  }
+
+  // <svg> 不是 HTMLElement，el.hidden 不会落到属性上，这里直接改属性
+  function resetYourHand() {
+    duelYouSlot.removeAttribute('hidden');
+    duelYouHand.setAttribute('hidden', '');
+    duelYouHand.style.width = '0px';
+  }
+  function renderHerHand() {
+    const width = handWidth(duelState.herCm);
+    for (const hand of [duelHerA, duelHerB]) hand.style.width = width;
+  }
+
+  function startDuel() {
+    clearDuelTimers();
+    duelState.playing = true;
+    duelState.done = false;
+    duelState.locked = false;
+    duelState.round = 1;
+    duelState.you = 0;
+    duelState.her = 0;
+    duelState.lastSize = '';
+    duelState.repeat = 0;
+    duelState.bag = shuffle(HER_CM);
+    duelScore.textContent = '你 0 : 0 小晚';
+    duelFoot.textContent = '三局两胜';
+    if (!currentNote) bubble.textContent = pickLine('bishou');
+    nextRound();
+  }
+
+  function nextRound() {
+    duelState.locked = false;
+    duelState.herCm = duelState.bag.shift() || pickOne(HER_CM);
+    clearWon();
+    resetYourHand();
+    renderHerHand();
+    setPicks(true);
+    say(duelState.round === 1 ? '她把手伸过来了。挑一只你的手，按上去比。' : '下一局。她的手换了个尺寸。');
+  }
+
+  function stopDuel() {
+    clearDuelTimers();
+    duelState.playing = false;
+    duelState.done = false;
+    duelState.locked = false;
+  }
+
+  function exitDuel() {
+    if (!duelState.playing) return;
+    stopDuel();
+    applyState('idle');
+  }
+
+  function pickSize(size) {
+    if (!duelState.playing) return;
+    if (duelState.done) startDuel();
+    if (duelState.locked) return;
+    const yourCm = YOUR_CM[size];
+    if (!yourCm) return;
+
+    duelState.locked = true;
+    setPicks(false);
+    duelState.repeat = size === duelState.lastSize ? duelState.repeat + 1 : 0;
+    duelState.lastSize = size;
+
+    duelYouSlot.setAttribute('hidden', '');
+    duelYouHand.removeAttribute('hidden');
+    duelYouHand.style.width = '0px';
+    requestAnimationFrame(() => {
+      duelYouHand.style.width = handWidth(yourCm);
+    });
+
+    const opening = duelState.repeat > 0 ? pickOne(REPEAT_LINES[size]) : pickOne(PICK_LINES[size]);
+    say(opening);
+
+    duelTimers.push(setTimeout(() => {
+      const mine = Math.round(yourCm * 10);
+      const hers = Math.round(duelState.herCm * 10);
+      const outcome = mine > hers ? 'you' : mine < hers ? 'her' : 'tie';
+      const diff = Math.abs(mine - hers) / 10;
+      const bucket = outcome === 'you'
+        ? (mine - hers >= 15 ? 'bigWin' : 'win')
+        : outcome === 'her'
+          ? (hers - mine >= 15 ? 'bigLose' : 'lose')
+          : 'tie';
+
+      if (outcome === 'you') duelState.you += 1;
+      if (outcome === 'her') duelState.her += 1;
+      duelSideYou.classList.toggle('won', outcome === 'you');
+      duelSideHer.classList.toggle('won', outcome === 'her');
+      duelScore.textContent = `你 ${duelState.you} : ${duelState.her} 小晚`;
+
+      const verdict = outcome === 'you' ? `你大 ${diff.toFixed(1)} cm` : outcome === 'her' ? `她大 ${diff.toFixed(1)} cm` : '一样大';
+      say(`${YOUR_NAME[size]} ${yourCm.toFixed(1)} cm ／ 她 ${duelState.herCm.toFixed(1)} cm，${verdict}。\n${pickOne(MARGIN_LINES[bucket])}`, true);
+
+      duelTimers.push(setTimeout(nextRoundOrResult, 1500));
+    }, 620));
+  }
+
+  function nextRoundOrResult() {
+    if (duelState.you < 2 && duelState.her < 2 && duelState.round < 3) {
+      duelState.round += 1;
+      nextRound();
+      return;
+    }
+
+    const outcome = duelState.you > duelState.her ? 'you' : duelState.her > duelState.you ? 'her' : 'tie';
+    const tally = readTally();
+    tally[outcome] = (tally[outcome] || 0) + 1;
+    writeTally(tally);
+
+    duelState.done = true;
+    duelState.locked = true;
+    say(`${pickOne(FINAL_LINES[outcome])}\n总战绩 ${tally.you || 0} 胜 ${tally.her || 0} 负 ${tally.tie || 0} 平`, true);
+    duelFoot.textContent = '点任意尺寸再来一局';
+    setPicks(true);
+  }
+
+  duelPicks.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-size]');
+    if (button) pickSize(button.dataset.size);
+  });
+  // 不让卡片的拖拽指针捕获吞掉面板里的点击（捕获后 click 会重定向到卡片）
+  duelBox.addEventListener('pointerdown', (event) => event.stopPropagation());
+  duelBox.addEventListener('click', (event) => event.stopPropagation());
+
+  // 隐藏入口：连点状态牌三下
+  let badgeClicks = 0, badgeTimer = null;
+  badge.addEventListener('pointerdown', (event) => event.stopPropagation());
+  badge.addEventListener('click', (event) => {
+    event.stopPropagation();
+    badgeClicks += 1;
+    clearTimeout(badgeTimer);
+    badgeTimer = setTimeout(() => { badgeClicks = 0; }, 1200);
+    if (badgeClicks >= 3) {
+      badgeClicks = 0;
+      if (meta) applyState('bishou');
+    }
+  });
+
+  let typed = '';
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      exitDuel();
+      return;
+    }
+    if (duelState.playing && SIZE_BY_DIGIT[event.key]) {
+      event.preventDefault();
+      pickSize(SIZE_BY_DIGIT[event.key]);
+      return;
+    }
+    if (event.key.length === 1 && /[a-z]/i.test(event.key)) {
+      typed = (typed + event.key.toLowerCase()).slice(-8);
+      if (typed.endsWith('bishou') && meta) {
+        typed = '';
+        applyState('bishou');
+      }
+    }
+  });
+
 
   function restorePosition() {
     try {

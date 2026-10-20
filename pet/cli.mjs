@@ -2,7 +2,7 @@
 // 赛博小晚桌宠 · 命令行入口
 //
 //   node pet/cli.mjs              启动桌宠（已运行则显示地址）
-//   node pet/cli.mjs clap         触发一个状态：idle/think/work/clap/question/sleep
+//   node pet/cli.mjs clap         触发一个状态：idle/think/work/clap/question/heart/sleep/bishou
 //   node pet/cli.mjs clap "台词"  触发状态并自定义气泡文本
 //   node pet/cli.mjs --port 7632  指定端口
 //   node pet/cli.mjs --no-open    只起服务，不弹窗口

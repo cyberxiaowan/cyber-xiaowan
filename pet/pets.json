@@ -90,6 +90,19 @@
         "zzz",
         "桌面很平静，适合休息。"
       ]
+    },
+    "bishou": {
+      "label": "比手大赛",
+      "image": "",
+      "emoji": "🖐",
+      "animation": "breathe",
+      "transient": false,
+      "game": "bishou",
+      "lines": [
+        "把手伸出来。比大小这件事，我从不谦虚。",
+        "你要是选小手，我不笑你。",
+        "手大不大不重要，别输就行。"
+      ]
     }
   }
 }
