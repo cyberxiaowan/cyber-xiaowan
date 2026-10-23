@@ -22,6 +22,7 @@ function defaultRoots() {
   return [
     { kind: 'Claude Code', dir: path.join(home, '.claude', 'skills') },
     { kind: 'Codex', dir: path.join(home, '.codex', 'skills') },
+    { kind: 'Qoder', dir: path.join(home, '.qoder', 'skills') },
     { kind: 'Agents', dir: path.join(home, '.agents', 'skills') },
     { kind: 'DSH', dir: path.join(home, '.dsh', 'skills') },
     { kind: 'Cursor', dir: path.join(home, '.cursor', 'skills') },
@@ -38,6 +39,7 @@ function rootsFromEnv() {
     let kind = 'Custom';
     if (lower.includes('.claude')) kind = 'Claude Code';
     else if (lower.includes('.codex')) kind = 'Codex';
+    else if (lower.includes('.qoder')) kind = 'Qoder';
     else if (lower.includes('.agents')) kind = 'Agents';
     else if (lower.includes('.dsh')) kind = 'DSH';
     else if (lower.includes('.cursor')) kind = 'Cursor';

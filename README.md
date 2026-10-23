@@ -60,19 +60,21 @@
 npx github:cyberxiaowan/cyber-xiaowan
 ```
 
-安装器会检测本机可用的 Claude Code、Codex、Agents、DSH、Cursor 和 Grok Build skill 目录；存在多个目标时会请你选择，已有安装默认不覆盖。
+安装器会检测本机可用的 Claude Code、Codex、Qoder、Agents、DSH、Cursor 和 Grok Build skill 目录；存在多个目标时会请你选择，已有安装默认不覆盖。
 
-## Grok Build / Cursor
+## Qoder / Grok Build / Cursor
 
-赛博小晚也可以作为 Cursor Skill 或 Grok Build Skill 使用。安装命令与其他宿主相同：
+赛博小晚也可以作为 Qoder、Cursor 或 Grok Build Skill 使用。安装命令与其他宿主相同：
 
 ```bash
 npx github:cyberxiaowan/cyber-xiaowan
 ```
 
-安装器会检查 Claude Code、Codex、Agents、DSH、Cursor（`~/.cursor/skills`）和 Grok Build（`~/.grok/skills`）。多个目录可用时按编号选择一个目标；已有安装默认不覆盖。
+安装器会检查 Claude Code、Codex、Qoder（`~/.qoder/skills`）、Agents、DSH、Cursor（`~/.cursor/skills`）和 Grok Build（`~/.grok/skills`）。多个目录可用时按编号选择一个目标；已有安装默认不覆盖。
 
-要指定目录，设置 `CYBER_XIAOWAN_SKILL_ROOTS`（多个路径用系统路径分隔符分开）。路径中的 `.cursor` 会标为 Cursor，`.grok` 会标为 Grok Build。
+要指定目录，设置 `CYBER_XIAOWAN_SKILL_ROOTS`（多个路径用系统路径分隔符分开）。路径中的 `.qoder`、`.cursor`、`.grok` 会分别标为 Qoder、Cursor、Grok Build。
+
+这里的 Qoder 指 Qoder IDE / CLI；QoderWork 使用独立的 Skill 目录，不属于本安装目标。
 
 Grok Bot 与 Grok Build 是不同产品。Grok Bot 的技能需要在 Grok Bot 对话或 Marketplace 中保存和管理，不能通过本地 skill 目录安装。
 
