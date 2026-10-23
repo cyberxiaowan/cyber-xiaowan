@@ -31,10 +31,50 @@ npm run pet
 | `question` | 🧐 歪头疑惑 | `node pet/cli.mjs question` | 有疑问，自动回落 |
 | `heart` | ❤️ 双手比心 | `node pet/cli.mjs heart` | 感谢/喜欢，自动回落 |
 | `sleep` | 😴 双手当枕打盹 | `node pet/cli.mjs sleep` | 长时间无活动 |
+| `bishou` | 🖐 比手大赛（彩蛋） | `node pet/cli.mjs bishou` | 三局两胜，比手掌大小，见下方「彩蛋」 |
 
 `clap.jpg` 是实拍原图；其余状态用同一人设的生图动作贴图（待机、思考、干活、疑问、比心、打盹）。图片态右下角会带对应状态的 emoji 徽标。
 
 交互：拖动卡片移动位置（会记住）；单击切换状态；双击直接鼓掌。窗口以 Chrome/Edge 应用模式打开，没有这些浏览器时回退默认浏览器。
+
+## 彩蛋：比手大赛
+
+`bishou` 是藏在状态清单里的隐藏状态：小晚伸出一双卡通大手，你从三只自己的手（小手 16.2 cm／中手 18.6 cm／大手 20.8 cm）里挑一只，两只手按同一把尺子摆到同一条底线上，比手掌大小。三局两胜，差 0.1 cm 也算赢。
+
+```bash
+node pet/cli.mjs bishou          # 直接开赛
+```
+
+不爱开命令行也行：**连点卡片左上角的状态牌三下**，或者在小晚窗口里直接敲 `bishou`。窗口里按 `1` `2` `3` 选尺寸，`Esc` 收工。她每局换一个手掌尺寸（15.4–22.4 cm 之间随机），也会对你的选法发表意见，通常不太客气。
+
+手是按 `cm × 3.05px` 真实比例画的，所以肉眼能看出差别；胜负按四舍五入到 0.1 cm 的数值判定。战绩只写在本机浏览器的 localStorage（`cyber-xiaowan-bishou`），不上传、不落日志；清掉它等于抹掉她的记忆。状态清单里 `"game": "bishou"` 是开关：删掉这个字段，它就退回一个普通的 emoji 状态，其他状态不受影响。
+
+## 接入 WorkBuddy
+
+WorkBuddy 的 hooks 与 Claude Code 同构，配置在 `~/.workbuddy/settings.json` 的 `hooks` 字段。一条命令挂上：
+
+```bash
+node <repo>/pet/integrations/install-workbuddy-hooks.mjs
+```
+
+它会写 `SessionStart`、`UserPromptSubmit`、`PreToolUse`、`PermissionRequest`、`Notification`、`PreCompact`、`Stop`、`SessionEnd` 八个事件，写前备份 `settings.json.bak-before-pet-<时间戳>`，只替换属于自己的条目，不动别人的钩子。摘掉加 `--remove`。
+
+映射关系：
+
+| WorkBuddy 事件 | 桌宠状态 |
+| --- | --- |
+| `SessionStart` | 🌱 待机 |
+| `UserPromptSubmit` | 🤔 思考中 |
+| `PreToolUse`（Read / Grep / Glob / WebFetch…） | 🤔 思考中（在看） |
+| `PreToolUse`（Write / Edit / Bash / MCP 工具…） | 🛠️ 干活中（在改） |
+| `PermissionRequest` | 🧐 有疑问 |
+| `Notification`（`idle_prompt` / `auth_success`） | 🌱 待机 / 🎉 鼓掌 |
+| `Stop` | 🎉 鼓掌庆祝，6 秒后回待机 |
+| `SessionEnd` | 😴 打盹 |
+
+和 Codex 一样**不要求先开桌宠**：没开着的时候钩子会 detached 起一个 `cli.mjs <state>`，窗口自己弹出来。区别是 WorkBuddy 的 `PreToolUse` 一次任务里会触发上百次，所以这里加了两条保护——同一状态 1.5 秒内只发一次；**比手大赛进行中不抢状态**（否则钩子一响，你正比着的手就没了）。不想被自动拉起仍可用 `CYBER_XIAOWAN_PET_AUTOSTART=0` 或 `~/.cyber-xiaowan/no-autostart`。
+
+钩子永远静默：stdout 为空、退出码 0，绝不会卡住或污染 WorkBuddy 的对话。
 
 ## 接入 Codex
 
@@ -44,7 +84,11 @@ Codex CLI 支持 `notify` 钩子。在 `~/.codex/config.toml` 中加一行（路
 notify = ["node", "<repo>/pet/integrations/codex-notify.mjs"]
 ```
 
-效果：Codex 每完成一轮回答，小晚就鼓一次掌；出错时歪头提问。桌宠没开时钩子静默退出，不影响 Codex。
+效果：Codex 每完成一轮回答，小晚就鼓一次掌；出错时歪头提问。
+
+**桌宠没开着的时候，钩子会自己把桌宠带起来**（detached 起 `cli.mjs <state>`，窗口自动弹出，状态一并设好）。所以接入之后不需要单独起服务、也不用记端口地址：跑 Codex 就行。
+
+不想被自动拉起的话，设 `CYBER_XIAOWAN_PET_AUTOSTART=0`，或在 `~/.cyber-xiaowan/no-autostart` 放一个空文件；两种情况钩子都退回「桌宠没开就静默退出」，绝不影响 Codex。
 
 ## 接入 DSH
 

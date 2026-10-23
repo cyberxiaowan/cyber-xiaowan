@@ -2,7 +2,7 @@
 // 赛博小晚桌宠 · 命令行入口
 //
 //   node pet/cli.mjs              启动桌宠（已运行则显示地址）
-//   node pet/cli.mjs clap         触发一个状态：idle/think/work/clap/question/sleep
+//   node pet/cli.mjs clap         触发一个状态：idle/think/work/clap/question/heart/sleep/bishou
 //   node pet/cli.mjs clap "台词"  触发状态并自定义气泡文本
 //   node pet/cli.mjs --port 7632  指定端口
 //   node pet/cli.mjs --no-open    只起服务，不弹窗口
@@ -120,9 +120,9 @@ if (port) {
   console.log('触发状态示例：node pet/cli.mjs clap');
   if (options.state) {
     await postState(new URL(url).port, options.state, options.note).catch(() => {});
-  } else if (options.open) {
-    openWindow(url);
   }
+  // 冷启动带状态时也要弹窗：否则 `node pet/cli.mjs bishou` 只起了服务，桌面上什么都没有
+  if (options.open) openWindow(url);
 
   let closing = false;
   const close = () => {
