@@ -1,3 +1,5 @@
+> **3.0 内测版**：这个分支是赛博小晚 3.0 测试版（自适应深度、判断修正、判断原则库）。安装：`npx github:cyberxiaowan/cyber-xiaowan#v3.0-beta`。正式版仍是 main 分支的 2.2。
+
 # 赛博小晚 · Cyber Xiaowan
 
 > 把一团乱麻搭成结构，把说不清的问题变成可以判断、可以推进的事。
